@@ -1,50 +1,88 @@
-# React + TypeScript + Vite
+# Sistema de Agendamento para Barbearia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um sistema web moderno e intuitivo para gerenciamento de agendamentos de uma barbearia, desenvolvido com React e TypeScript.
 
-Currently, two official plugins are available:
+## 🚀 Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✂️ Agendamento online de serviços
+- 📱 Interface responsiva e moderna
+- 💬 Integração com WhatsApp para confirmações
+- 👨‍💼 Painel administrativo completo
+- 📅 Gestão inteligente de horários
+- 💇‍♂️ Cadastro de pacotes de serviços
+- 🔒 Sistema de bloqueio de datas/horários
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologias Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React + TypeScript
+- Material-UI (MUI)
+- Supabase
+- Date-fns
+- React Hot Toast
+- WhatsApp API
 
-- Configure the top-level `parserOptions` property like this:
+## 📁 Estrutura do Projeto
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+src/
+├── assets/        # Recursos estáticos
+├── components/    # Componentes reutilizáveis
+├── contexts/      # Contextos React
+├── pages/         # Páginas da aplicação
+├── services/      # Serviços e integrações
+├── styles/        # Estilos globais
+└── types/         # Definições de tipos TypeScript
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## ⚙️ Funcionalidades Principais
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Para Clientes
+- Visualização de horários disponíveis em tempo real
+- Agendamento intuitivo com seleção de data/hora
+- Escolha de pacotes de serviços
+- Confirmação automática via WhatsApp
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Para Administradores
+- Gestão completa de agendamentos
+- Configuração de horários de funcionamento
+- Bloqueio de datas específicas
+- Cadastro e gestão de pacotes de serviços
+- Visualização de estatísticas
+
+## 🌟 Diferenciais
+
+- Design moderno e responsivo
+- UX intuitiva e amigável
+- Integração com WhatsApp para melhor comunicação
+- Sistema de verificação de disponibilidade em tempo real
+- Gestão eficiente de horários e agendamentos
+
+## 🚀 Como Executar
+
+1. Clone o repositório
+```bash
+git clone https://github.com/gabriel-Andrade-Correa/Barbearia.git
 ```
+
+2. Instale as dependências
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente
+```bash
+cp .env.example .env
+```
+
+4. Execute o projeto
+```bash
+npm run dev
+```
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 🤝 Contribuições
+
+Contribuições são sempre bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
