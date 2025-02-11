@@ -137,7 +137,6 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
 };
 
 const Scheduling = () => {
-  const theme = useTheme();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [name, setName] = useState('');
@@ -147,7 +146,6 @@ const Scheduling = () => {
   const [servicePacotes, setServicePacotes] = useState<ServicePackage[]>([]);
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
   const [workingDays, setWorkingDays] = useState<string[]>([]);
-  const [workingHours] = useState({ start: '08:00', end: '18:00' });
   const [horarios, setHorarios] = useState<string[]>([]);
   const [ocupiedTimeSlots, setOcupiedTimeSlots] = useState<string[]>([]);
   const [showTimeModal, setShowTimeModal] = useState(false);

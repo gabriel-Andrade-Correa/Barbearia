@@ -49,7 +49,6 @@ const AdminEstatisticas = () => {
     cancellationRate: 0,
   });
   const [dailyData, setDailyData] = useState<DailyData[]>([]);
-  const [monthlyData, setMonthlyData] = useState<DailyData[]>([]);
   const [pieData, setPieData] = useState<PieDataItem[]>([]);
 
   useEffect(() => {
