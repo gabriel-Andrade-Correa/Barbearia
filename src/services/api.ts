@@ -4,7 +4,9 @@ import { Appointment, ServicePackage, AdminSettings } from '../types';
 // Serviços para Agendamentos
 export const appointmentService = {
   create: async (appointment: Omit<Appointment, 'id' | 'created_at'>) => {
-    console.log('API - Criando agendamento:', appointment);
+    if (import.meta.env.DEV) {
+      console.log('API - Criando agendamento:', appointment);
+    }
     
     // Primeiro verifica se já existe um agendamento neste horário
     const { data: existingAppointments } = await supabase
@@ -14,7 +16,9 @@ export const appointmentService = {
       .eq('appointment_time', appointment.appointment_time)
       .neq('status', 'cancelled');
 
-    console.log('API - Agendamentos existentes:', existingAppointments);
+    if (import.meta.env.DEV) {
+      console.log('API - Agendamentos existentes:', existingAppointments);
+    }
 
     if (existingAppointments && existingAppointments.length > 0) {
       throw new Error('Este horário já está ocupado');
@@ -26,7 +30,9 @@ export const appointmentService = {
       appointment_time: appointment.appointment_time.substring(0, 5)
     };
 
-    console.log('API - Salvando agendamento formatado:', formattedAppointment);
+    if (import.meta.env.DEV) {
+      console.log('API - Salvando agendamento formatado:', formattedAppointment);
+    }
 
     // Se não existir, cria o novo agendamento
     const { data, error } = await supabase
@@ -40,7 +46,9 @@ export const appointmentService = {
       throw error;
     }
 
-    console.log('API - Agendamento criado:', data);
+    if (import.meta.env.DEV) {
+      console.log('API - Agendamento criado:', data);
+    }
     return data;
   },
 
@@ -88,7 +96,9 @@ export const appointmentService = {
   },
 
   getByDate: async (date: string) => {
-    console.log('API - Buscando agendamentos para:', date);
+    if (import.meta.env.DEV) {
+      console.log('API - Buscando agendamentos para:', date);
+    }
     const { data, error } = await supabase
       .from('appointments')
       .select('*')
@@ -101,11 +111,15 @@ export const appointmentService = {
       throw error;
     }
 
-    console.log('API - Dados brutos:', JSON.stringify(data, null, 2));
+    if (import.meta.env.DEV) {
+      console.log('API - Dados brutos:', JSON.stringify(data, null, 2));
+    }
     
     // Garante que os horários estejam no formato correto (HH:mm)
     const formattedData = data?.map(appointment => {
-      console.log('API - Processando agendamento:', appointment);
+      if (import.meta.env.DEV) {
+        console.log('API - Processando agendamento:', appointment);
+      }
       return {
         ...appointment,
         // Se o horário não existir, usa uma string vazia
@@ -113,7 +127,9 @@ export const appointmentService = {
       };
     }) || [];
     
-    console.log('API - Agendamentos encontrados (formatados):', formattedData);
+    if (import.meta.env.DEV) {
+      console.log('API - Agendamentos encontrados (formatados):', formattedData);
+    }
     return formattedData;
   }
 };

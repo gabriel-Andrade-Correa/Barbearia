@@ -46,9 +46,11 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
   onSelectTime: (time: string) => void;
   onClose: () => void;
 }) => {
-  console.log('Frontend - Renderizando grade de horários');
-  console.log('Frontend - Horários disponíveis:', horarios);
-  console.log('Frontend - Horários ocupados:', ocupiedTimeSlots);
+  if (import.meta.env.DEV) {
+    console.log('Frontend - Renderizando grade de horários');
+    console.log('Frontend - Horários disponíveis:', horarios);
+    console.log('Frontend - Horários ocupados:', ocupiedTimeSlots);
+  }
   
   return (
     <Dialog 
@@ -85,8 +87,10 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
           {horarios.map((horario) => {
             const timeToCheck = horario.substring(0, 5);
             const isOccupied = ocupiedTimeSlots.includes(timeToCheck);
-            console.log(`Frontend - Verificando horário ${timeToCheck} - Ocupado: ${isOccupied}`, 
-              'Lista de ocupados:', ocupiedTimeSlots);
+            if (import.meta.env.DEV) {
+              console.log(`Frontend - Verificando horário ${timeToCheck} - Ocupado: ${isOccupied}`, 
+                'Lista de ocupados:', ocupiedTimeSlots);
+            }
             return (
               <Grid item xs={4} sm={3} key={horario}>
                 <Button
@@ -185,24 +189,34 @@ const Scheduling = () => {
 
       try {
         const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-        console.log('Frontend - Buscando agendamentos para a data:', formattedDate);
+        if (import.meta.env.DEV) {
+          console.log('Frontend - Buscando agendamentos para a data:', formattedDate);
+        }
         const appointments = await appointmentService.getByDate(formattedDate);
-        console.log('Frontend - Agendamentos encontrados (bruto):', appointments);
+        if (import.meta.env.DEV) {
+          console.log('Frontend - Agendamentos encontrados (bruto):', appointments);
+        }
         
         // Filtra apenas os agendamentos confirmados ou pendentes e extrai os horários
         const occupiedTimes = appointments
           .filter((app: Appointment) => {
-            console.log('Frontend - Verificando agendamento:', app);
+            if (import.meta.env.DEV) {
+              console.log('Frontend - Verificando agendamento:', app);
+            }
             return app.status !== 'cancelled' && app.appointment_time;
           })
           .map((app: Appointment) => {
             const time = app.appointment_time?.substring(0, 5) || '';
-            console.log('Frontend - Extraindo horário:', time, 'do agendamento:', app);
+            if (import.meta.env.DEV) {
+              console.log('Frontend - Extraindo horário:', time, 'do agendamento:', app);
+            }
             return time;
           })
           .filter(time => time); // Remove horários vazios
         
-        console.log('Frontend - Horários ocupados (formatados):', occupiedTimes);
+        if (import.meta.env.DEV) {
+          console.log('Frontend - Horários ocupados (formatados):', occupiedTimes);
+        }
         setOcupiedTimeSlots(occupiedTimes);
       } catch (error) {
         console.error('Frontend - Erro ao carregar horários ocupados:', error);
