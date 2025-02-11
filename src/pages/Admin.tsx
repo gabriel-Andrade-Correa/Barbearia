@@ -13,7 +13,6 @@ import {
   DialogActions,
   TextField,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Navbar from '../components/Navbar';
@@ -67,7 +66,7 @@ const Admin = () => {
     }
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 

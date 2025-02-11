@@ -24,11 +24,20 @@ import {
   Cell,
 } from 'recharts';
 import { format, subDays, subMonths, subYears } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { statisticsService } from '../services/api';
 import toast from 'react-hot-toast';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
+
+interface PieDataItem {
+  name: string;
+  value: number;
+}
+
+interface DailyData {
+  date: string;
+  appointments: number;
+}
 
 const AdminEstatisticas = () => {
   const [periodoSelecionado, setPeriodoSelecionado] = useState('semana');
@@ -39,8 +48,9 @@ const AdminEstatisticas = () => {
     mostPopularService: '',
     cancellationRate: 0,
   });
-  const [barData, setBarData] = useState([]);
-  const [pieData, setPieData] = useState([]);
+  const [dailyData, setDailyData] = useState<DailyData[]>([]);
+  const [monthlyData, setMonthlyData] = useState<DailyData[]>([]);
+  const [pieData, setPieData] = useState<PieDataItem[]>([]);
 
   useEffect(() => {
     loadStatistics();
@@ -86,7 +96,7 @@ const AdminEstatisticas = () => {
         cancellationRate: appointmentStats.cancellation_rate || 0,
       });
 
-      setBarData(appointmentStats.daily_appointments || []);
+      setDailyData(appointmentStats.daily_appointments || []);
       setPieData(serviceDistribution || []);
     } catch (error) {
       console.error('Erro ao carregar estatísticas:', error);
@@ -176,7 +186,7 @@ const AdminEstatisticas = () => {
               Agendamentos por Dia
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={barData}>
+              <BarChart data={dailyData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
@@ -206,8 +216,11 @@ const AdminEstatisticas = () => {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {pieData.map((entry: any, index: number) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  {pieData.map((_, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={COLORS[index % COLORS.length]} 
+                    />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -220,4 +233,4 @@ const AdminEstatisticas = () => {
   );
 };
 
-export default AdminEstatisticas; 
+export default AdminEstatisticas;

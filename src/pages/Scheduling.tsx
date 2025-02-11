@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import {
   Box,
@@ -10,7 +9,6 @@ import {
   Grid,
   MenuItem,
   useTheme,
-  useMediaQuery,
   CircularProgress,
   Dialog,
   DialogTitle,
@@ -18,7 +16,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import { addDays, format, isAfter, isBefore, parse, setHours, setMinutes, addMinutes } from 'date-fns';
+import { addDays, format, parse, addMinutes } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
@@ -140,7 +138,6 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
 
 const Scheduling = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [name, setName] = useState('');
@@ -150,7 +147,7 @@ const Scheduling = () => {
   const [servicePacotes, setServicePacotes] = useState<ServicePackage[]>([]);
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
   const [workingDays, setWorkingDays] = useState<string[]>([]);
-  const [workingHours, setWorkingHours] = useState({ start: '08:00', end: '18:00' });
+  const [workingHours] = useState({ start: '08:00', end: '18:00' });
   const [horarios, setHorarios] = useState<string[]>([]);
   const [ocupiedTimeSlots, setOcupiedTimeSlots] = useState<string[]>([]);
   const [showTimeModal, setShowTimeModal] = useState(false);
@@ -166,7 +163,6 @@ const Scheduling = () => {
         setServicePacotes(packages);
         setBlockedDates(settings.blocked_dates || []);
         setWorkingDays(settings.working_days || []);
-        setWorkingHours(settings.working_hours || { start: '08:00', end: '18:00' });
         setHorarios(generateTimeSlots(
           settings.working_hours?.start || '08:00',
           settings.working_hours?.end || '18:00'
