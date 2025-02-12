@@ -75,11 +75,11 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
             </Box>
             <Box display="flex" alignItems="center" gap={1}>
               <Box sx={{ width: 16, height: 16, bgcolor: 'grey.300', borderRadius: 1 }} />
-              <Typography variant="body2">Ocupado</Typography>
+              <Typography variant="body2">Ocupado/Bloqueado</Typography>
             </Box>
           </Box>
         </Box>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           {horarios.map((horario) => {
             const timeToCheck = horario.substring(0, 5);
             const isOccupied = ocupiedTimeSlots.includes(timeToCheck);
@@ -122,7 +122,7 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
                         mt: 0.5 
                       }}
                     >
-                      (Ocupado)
+                      (Indisponível)
                     </Box>
                   )}
                 </Button>
@@ -183,11 +183,11 @@ const Scheduling = () => {
         const appointments = await appointmentService.getByDate(formattedDate);
         console.log('Frontend - Agendamentos encontrados (bruto):', appointments);
         
-        // Filtra apenas os agendamentos confirmados ou pendentes e extrai os horários
+        // Filtra apenas os agendamentos confirmados, pendentes e horários bloqueados
         const occupiedTimes = appointments
           .filter((app: Appointment) => {
             console.log('Frontend - Verificando agendamento:', app);
-            return app.status !== 'cancelled' && app.appointment_time;
+            return (app.status !== 'cancelled' || app.service_package === 'Horário Bloqueado') && app.appointment_time;
           })
           .map((app: Appointment) => {
             const time = app.appointment_time?.substring(0, 5) || '';

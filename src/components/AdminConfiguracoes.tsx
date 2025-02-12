@@ -11,6 +11,10 @@ import {
   Chip,
   Stack,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
@@ -38,6 +42,10 @@ const AdminConfiguracoes = () => {
 
   const [blockedDate, setBlockedDate] = useState<Date | null>(null);
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
+  const [blockedTimeSlots, setBlockedTimeSlots] = useState<Array<{ date: string; time: string }>>([]);
+  const [selectedBlockDate, setSelectedBlockDate] = useState<Date | null>(null);
+  const [selectedBlockTime, setSelectedBlockTime] = useState('');
+  const [showBlockTimeDialog, setShowBlockTimeDialog] = useState(false);
 
   useEffect(() => {
     loadSettings();
@@ -58,6 +66,7 @@ const AdminConfiguracoes = () => {
         ]);
         setWorkingHours(settings.working_hours || { start: '08:00', end: '18:00' });
         setBlockedDates(settings.blocked_dates || []);
+        setBlockedTimeSlots(settings.blocked_time_slots || []);
       }
     } catch (error) {
       console.error('Erro ao carregar configurações:', error);
@@ -101,6 +110,38 @@ const AdminConfiguracoes = () => {
     setBlockedDates(blockedDates.filter((date) => date !== dateToRemove));
   };
 
+  const handleAddBlockedTimeSlot = () => {
+    if (selectedBlockDate && selectedBlockTime) {
+      const formattedDate = format(selectedBlockDate, 'yyyy-MM-dd');
+      const newTimeSlot = {
+        date: formattedDate,
+        time: selectedBlockTime,
+      };
+      
+      // Verifica se já existe esse horário bloqueado
+      const exists = blockedTimeSlots.some(
+        slot => slot.date === newTimeSlot.date && slot.time === newTimeSlot.time
+      );
+
+      if (!exists) {
+        setBlockedTimeSlots([...blockedTimeSlots, newTimeSlot]);
+        setSelectedBlockDate(null);
+        setSelectedBlockTime('');
+        setShowBlockTimeDialog(false);
+      } else {
+        toast.error('Este horário já está bloqueado');
+      }
+    }
+  };
+
+  const handleRemoveBlockedTimeSlot = (date: string, time: string) => {
+    setBlockedTimeSlots(
+      blockedTimeSlots.filter(
+        slot => !(slot.date === date && slot.time === time)
+      )
+    );
+  };
+
   const handleSaveSettings = async () => {
     setSaving(true);
     try {
@@ -109,6 +150,7 @@ const AdminConfiguracoes = () => {
         working_days: workingDays,
         working_hours: workingHours,
         blocked_dates: blockedDates,
+        blocked_time_slots: blockedTimeSlots,
       };
 
       await adminSettingsService.update(settings);
@@ -313,6 +355,40 @@ const AdminConfiguracoes = () => {
           </Paper>
         </Grid>
 
+        {/* Bloqueio de horários específicos */}
+        <Grid item xs={12}>
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              Horários Bloqueados
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  onClick={() => setShowBlockTimeDialog(true)}
+                  disabled={saving}
+                  sx={{ mb: 2 }}
+                >
+                  Bloquear Novo Horário
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  {blockedTimeSlots.map((slot) => (
+                    <Chip
+                      key={`${slot.date}-${slot.time}`}
+                      label={`${format(new Date(slot.date), 'dd/MM/yyyy')} - ${slot.time}`}
+                      onDelete={() => handleRemoveBlockedTimeSlot(slot.date, slot.time)}
+                      sx={{ m: 0.5 }}
+                      disabled={saving}
+                    />
+                  ))}
+                </Stack>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+
         {/* Botão salvar */}
         <Grid item xs={12}>
           <Button
@@ -327,6 +403,50 @@ const AdminConfiguracoes = () => {
           </Button>
         </Grid>
       </Grid>
+
+      {/* Dialog para adicionar horário bloqueado */}
+      <Dialog open={showBlockTimeDialog} onClose={() => setShowBlockTimeDialog(false)}>
+        <DialogTitle>Bloquear Horário Específico</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid item xs={12}>
+              <DatePicker
+                label="Selecionar data"
+                value={selectedBlockDate}
+                onChange={(newValue) => setSelectedBlockDate(newValue)}
+                format="dd/MM/yyyy"
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Horário"
+                type="time"
+                value={selectedBlockTime}
+                onChange={(e) => setSelectedBlockTime(e.target.value)}
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowBlockTimeDialog(false)}>Cancelar</Button>
+          <Button 
+            onClick={handleAddBlockedTimeSlot}
+            disabled={!selectedBlockDate || !selectedBlockTime}
+            variant="contained"
+          >
+            Adicionar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

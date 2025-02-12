@@ -20,6 +20,16 @@ export const appointmentService = {
       throw new Error('Este horário já está ocupado');
     }
 
+    // Verifica se o horário está bloqueado
+    const { blocked_time_slots } = await adminSettingsService.getBlockedDates();
+    const isTimeBlocked = blocked_time_slots.some(
+      slot => slot.date === appointment.appointment_date && slot.time === appointment.appointment_time
+    );
+
+    if (isTimeBlocked) {
+      throw new Error('Este horário está bloqueado pelo administrador');
+    }
+
     // Garante que o horário esteja no formato correto
     const formattedAppointment = {
       ...appointment,
@@ -89,32 +99,54 @@ export const appointmentService = {
 
   getByDate: async (date: string) => {
     console.log('API - Buscando agendamentos para:', date);
-    const { data, error } = await supabase
-      .from('appointments')
-      .select('*')
-      .eq('appointment_date', date)
-      .neq('status', 'cancelled')
-      .order('appointment_time', { ascending: true });
+    
+    // Busca agendamentos e horários bloqueados
+    const [appointments, settings] = await Promise.all([
+      supabase
+        .from('appointments')
+        .select('*')
+        .eq('appointment_date', date)
+        .neq('status', 'cancelled')
+        .order('appointment_time', { ascending: true }),
+      adminSettingsService.getBlockedDates()
+    ]);
 
-    if (error) {
-      console.error('API - Erro ao buscar agendamentos:', error);
-      throw error;
+    if (appointments.error) {
+      console.error('API - Erro ao buscar agendamentos:', appointments.error);
+      throw appointments.error;
     }
 
-    console.log('API - Dados brutos:', JSON.stringify(data, null, 2));
-    
-    // Garante que os horários estejam no formato correto (HH:mm)
-    const formattedData = data?.map(appointment => {
-      console.log('API - Processando agendamento:', appointment);
-      return {
-        ...appointment,
-        // Se o horário não existir, usa uma string vazia
-        appointment_time: appointment.appointment_time?.substring(0, 5) || ''
-      };
-    }) || [];
-    
-    console.log('API - Agendamentos encontrados (formatados):', formattedData);
-    return formattedData;
+    // Filtra os horários bloqueados para a data específica
+    const blockedTimes = settings.blocked_time_slots
+      .filter(slot => slot.date === date)
+      .map(slot => slot.time);
+
+    console.log('API - Horários bloqueados:', blockedTimes);
+
+    // Combina os horários ocupados com os bloqueados
+    const occupiedTimes = [
+      ...appointments.data.map(app => app.appointment_time?.substring(0, 5) || ''),
+      ...blockedTimes
+    ];
+
+    console.log('API - Horários ocupados (incluindo bloqueados):', occupiedTimes);
+
+    // Retorna os agendamentos e também os horários bloqueados como se fossem agendamentos
+    const blockedAppointments = blockedTimes.map(time => ({
+      id: `blocked-${date}-${time}`,
+      appointment_date: date,
+      appointment_time: time,
+      client_name: 'BLOQUEADO',
+      client_phone: '',
+      service_package: 'Horário Bloqueado',
+      status: 'cancelled',
+      created_at: new Date().toISOString()
+    }));
+
+    return [...appointments.data, ...blockedAppointments].map(appointment => ({
+      ...appointment,
+      appointment_time: appointment.appointment_time?.substring(0, 5) || ''
+    }));
   }
 };
 
@@ -166,7 +198,8 @@ export const adminSettingsService = {
         'saturday'
       ],
       working_hours: data?.working_hours || { start: '08:00', end: '18:00' },
-      blocked_dates: Array.isArray(data?.blocked_dates) ? data.blocked_dates : []
+      blocked_dates: Array.isArray(data?.blocked_dates) ? data.blocked_dates : [],
+      blocked_time_slots: Array.isArray(data?.blocked_time_slots) ? data.blocked_time_slots : [],
     };
   },
 
@@ -175,7 +208,8 @@ export const adminSettingsService = {
     const sanitizedSettings = {
       ...settings,
       working_days: Array.isArray(settings.working_days) ? settings.working_days : [],
-      blocked_dates: Array.isArray(settings.blocked_dates) ? settings.blocked_dates : []
+      blocked_dates: Array.isArray(settings.blocked_dates) ? settings.blocked_dates : [],
+      blocked_time_slots: Array.isArray(settings.blocked_time_slots) ? settings.blocked_time_slots : [],
     };
 
     const { data, error } = await supabase
@@ -192,11 +226,14 @@ export const adminSettingsService = {
   getBlockedDates: async () => {
     const { data, error } = await supabase
       .from('admin_settings')
-      .select('blocked_dates')
+      .select('blocked_dates, blocked_time_slots')
       .single();
 
     if (error) throw error;
-    return Array.isArray(data?.blocked_dates) ? data.blocked_dates : [];
+    return {
+      blocked_dates: Array.isArray(data?.blocked_dates) ? data.blocked_dates : [],
+      blocked_time_slots: Array.isArray(data?.blocked_time_slots) ? data.blocked_time_slots : [],
+    };
   }
 };
 

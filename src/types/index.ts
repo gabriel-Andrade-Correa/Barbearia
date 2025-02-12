@@ -25,4 +25,8 @@ export interface AdminSettings {
   };
   working_days: string[];
   blocked_dates: string[];
+  blocked_time_slots: Array<{
+    date: string;
+    time: string;
+  }>;
 } 
