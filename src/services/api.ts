@@ -241,19 +241,37 @@ export const adminSettingsService = {
 export const statisticsService = {
   getAppointmentStats: async (startDate: string, endDate: string) => {
     try {
-      const { data: appointments } = await supabase
+      console.log('📊 Buscando estatísticas para período:', startDate, 'até', endDate);
+      
+      // Primeiro tenta buscar no período especificado
+      let { data: appointments, error } = await supabase
         .from('appointments')
         .select('*')
         .gte('appointment_date', startDate)
         .lte('appointment_date', endDate);
 
-      if (!appointments) return {
-        total: 0,
-        average_per_day: 0,
-        most_popular_service: '',
-        cancellation_rate: 0,
-        daily_appointments: []
-      };
+      if (error) {
+        console.error('❌ Erro ao buscar agendamentos:', error);
+        throw error;
+      }
+
+      console.log('📋 Agendamentos no período:', appointments?.length || 0);
+
+      // Se não encontrou agendamentos no período, busca todos os agendamentos
+      if (!appointments || appointments.length === 0) {
+        console.log('📊 Nenhum agendamento no período, buscando todos os agendamentos...');
+        const { data: allAppointments, error: allError } = await supabase
+          .from('appointments')
+          .select('*');
+
+        if (allError) {
+          console.error('❌ Erro ao buscar todos os agendamentos:', allError);
+          throw allError;
+        }
+
+        appointments = allAppointments;
+        console.log('📋 Total de agendamentos encontrados:', appointments?.length || 0);
+      }
 
       const total = appointments.length;
       const cancelled = appointments.filter(a => a.status === 'cancelled').length;
@@ -296,11 +314,20 @@ export const statisticsService = {
 
   getServiceDistribution: async () => {
     try {
-      const { data: appointments } = await supabase
+      console.log('📊 Buscando distribuição de serviços...');
+      
+      const { data: appointments, error } = await supabase
         .from('appointments')
         .select('service_package');
 
-      if (!appointments) return [];
+      if (error) {
+        console.error('❌ Erro ao buscar serviços:', error);
+        throw error;
+      }
+
+      console.log('📋 Total de serviços encontrados:', appointments?.length || 0);
+
+      if (!appointments || appointments.length === 0) return [];
 
       const distribution = appointments.reduce((acc: any[], appointment) => {
         const existingService = acc.find(s => s.name === appointment.service_package);

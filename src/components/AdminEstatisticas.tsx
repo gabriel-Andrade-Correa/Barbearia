@@ -61,7 +61,8 @@ const AdminEstatisticas = () => {
 
     switch (periodoSelecionado) {
       case 'semana':
-        startDate = subDays(endDate, 7);
+        // Buscar dados dos últimos 30 dias para ter mais dados para mostrar
+        startDate = subDays(endDate, 30);
         break;
       case 'mes':
         startDate = subMonths(endDate, 1);
@@ -70,7 +71,7 @@ const AdminEstatisticas = () => {
         startDate = subYears(endDate, 1);
         break;
       default:
-        startDate = subDays(endDate, 7);
+        startDate = subDays(endDate, 30);
     }
 
     return {
@@ -83,10 +84,18 @@ const AdminEstatisticas = () => {
     setLoading(true);
     try {
       const { startDate, endDate } = getDateRange();
+      console.log('🔍 AdminEstatisticas - Carregando estatísticas...');
+      console.log('📅 Período selecionado:', periodoSelecionado);
+      console.log('📅 Data início:', startDate);
+      console.log('📅 Data fim:', endDate);
+      
       const [appointmentStats, serviceDistribution] = await Promise.all([
         statisticsService.getAppointmentStats(startDate, endDate),
         statisticsService.getServiceDistribution(),
       ]);
+
+      console.log('📊 Estatísticas recebidas:', appointmentStats);
+      console.log('📊 Distribuição de serviços:', serviceDistribution);
 
       setStats({
         totalAppointments: appointmentStats.total || 0,
@@ -97,8 +106,10 @@ const AdminEstatisticas = () => {
 
       setDailyData(appointmentStats.daily_appointments || []);
       setPieData(serviceDistribution || []);
+      
+      console.log('✅ Estatísticas carregadas com sucesso');
     } catch (error) {
-      console.error('Erro ao carregar estatísticas:', error);
+      console.error('❌ Erro ao carregar estatísticas:', error);
       toast.error('Erro ao carregar estatísticas');
     } finally {
       setLoading(false);
@@ -171,11 +182,14 @@ const AdminEstatisticas = () => {
               label="Período"
               onChange={handlePeriodoChange}
             >
-              <MenuItem value="semana">Última Semana</MenuItem>
+              <MenuItem value="semana">Últimos 30 Dias</MenuItem>
               <MenuItem value="mes">Último Mês</MenuItem>
               <MenuItem value="ano">Último Ano</MenuItem>
             </Select>
           </FormControl>
+          <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
+            * Mostrando todos os agendamentos disponíveis
+          </Typography>
         </Grid>
 
         {/* Gráfico de barras */}
