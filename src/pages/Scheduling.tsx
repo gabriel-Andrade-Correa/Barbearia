@@ -333,7 +333,7 @@ const Scheduling = () => {
       background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/Gui.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundAttachment: 'fixed',
+      backgroundAttachment: { xs: 'scroll', sm: 'fixed' },
       position: 'relative',
     }}>
       <Navbar />
