@@ -72,8 +72,21 @@ const Admin = () => {
 
   if (!isAuthenticated) {
     return (
-      <Dialog open={isLoginDialogOpen} onClose={() => navigate('/')}>
-        <DialogTitle>Login Administrativo</DialogTitle>
+      <Dialog 
+        open={isLoginDialogOpen} 
+        onClose={() => navigate('/')}
+        PaperProps={{
+          sx: {
+            background: 'rgba(26, 26, 26, 0.95)',
+            border: '1px solid rgba(255, 215, 0, 0.3)',
+            backdropFilter: 'blur(10px)',
+            color: '#ffffff',
+          }
+        }}
+      >
+        <DialogTitle sx={{ color: '#FFD700', fontWeight: 600 }}>
+          🔐 Login Administrativo
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -83,6 +96,26 @@ const Admin = () => {
             fullWidth
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: '#ffffff',
+                '& fieldset': {
+                  borderColor: 'rgba(255, 215, 0, 0.3)',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'rgba(255, 215, 0, 0.5)',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#FFD700',
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: 'rgba(255, 255, 255, 0.7)',
+                '&.Mui-focused': {
+                  color: '#FFD700',
+                },
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -91,11 +124,53 @@ const Admin = () => {
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: '#ffffff',
+                '& fieldset': {
+                  borderColor: 'rgba(255, 215, 0, 0.3)',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'rgba(255, 215, 0, 0.5)',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#FFD700',
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: 'rgba(255, 255, 255, 0.7)',
+                '&.Mui-focused': {
+                  color: '#FFD700',
+                },
+              },
+            }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => navigate('/')}>Cancelar</Button>
-          <Button onClick={handleLogin}>Entrar</Button>
+          <Button 
+            onClick={() => navigate('/')}
+            sx={{ 
+              color: 'rgba(255, 255, 255, 0.7)',
+              '&:hover': {
+                color: '#ffffff',
+              }
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button 
+            onClick={handleLogin}
+            sx={{ 
+              background: 'linear-gradient(45deg, #FFD700, #B8860B)',
+              color: '#000000',
+              fontWeight: 600,
+              '&:hover': {
+                background: 'linear-gradient(45deg, #B8860B, #FFD700)',
+              }
+            }}
+          >
+            Entrar
+          </Button>
         </DialogActions>
       </Dialog>
     );
@@ -104,7 +179,7 @@ const Admin = () => {
   return (
     <Box sx={{ 
       minHeight: '100vh', 
-      background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/src/assets/Gui.png')`,
+      background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/Gui.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
