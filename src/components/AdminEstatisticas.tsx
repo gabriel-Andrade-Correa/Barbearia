@@ -133,41 +133,141 @@ const AdminEstatisticas = () => {
       <Grid container spacing={{ xs: 1, sm: 3 }}>
         {/* Cards de estatísticas */}
         <Grid item xs={6} sm={6} md={3}>
-          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
-              Total de Agendamentos
+          <Paper sx={{ 
+            p: { xs: 2, sm: 3 }, 
+            textAlign: 'center',
+            background: 'linear-gradient(135deg, #000000 0%, #333333 100%)',
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden',
+            border: '1px solid rgba(255, 215, 0, 0.3)',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: -50,
+              right: -50,
+              width: 100,
+              height: 100,
+              borderRadius: '50%',
+              background: 'rgba(255, 215, 0, 0.1)',
+            }
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              fontWeight: 600,
+              opacity: 0.9,
+            }}>
+              📅 Total de Agendamentos
             </Typography>
-            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
+            <Typography variant="h3" sx={{ 
+              fontSize: { xs: '1.75rem', sm: '2.5rem' },
+              fontWeight: 700,
+            }}>
               {stats.totalAppointments}
             </Typography>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={6} md={3}>
-          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
-              Média Diária
+          <Paper sx={{ 
+            p: { xs: 2, sm: 3 }, 
+            textAlign: 'center',
+            background: 'linear-gradient(135deg, #FFD700 0%, #B8860B 100%)',
+            color: '#000000',
+            position: 'relative',
+            overflow: 'hidden',
+            border: '1px solid rgba(255, 215, 0, 0.5)',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: -50,
+              right: -50,
+              width: 100,
+              height: 100,
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.1)',
+            }
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              fontWeight: 600,
+              opacity: 0.9,
+            }}>
+              📈 Média Diária
             </Typography>
-            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
+            <Typography variant="h3" sx={{ 
+              fontSize: { xs: '1.75rem', sm: '2.5rem' },
+              fontWeight: 700,
+            }}>
               {stats.averagePerDay.toFixed(1)}
             </Typography>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={6} md={3}>
-          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
-              Serviço Mais Popular
+          <Paper sx={{ 
+            p: { xs: 2, sm: 3 }, 
+            textAlign: 'center',
+            background: 'linear-gradient(135deg, #00C851 0%, #5DFC71 100%)',
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden',
+            border: '1px solid rgba(0, 200, 81, 0.3)',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: -50,
+              right: -50,
+              width: 100,
+              height: 100,
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.1)',
+            }
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              fontWeight: 600,
+              opacity: 0.9,
+            }}>
+              ⭐ Serviço Mais Popular
             </Typography>
-            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
+            <Typography variant="h6" sx={{ 
+              fontSize: { xs: '1rem', sm: '1.25rem' },
+              fontWeight: 600,
+            }}>
               {stats.mostPopularService}
             </Typography>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={6} md={3}>
-          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
-              Taxa de Cancelamento
+          <Paper sx={{ 
+            p: { xs: 2, sm: 3 }, 
+            textAlign: 'center',
+            background: 'linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%)',
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden',
+            border: '1px solid rgba(255, 68, 68, 0.3)',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: -50,
+              right: -50,
+              width: 100,
+              height: 100,
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.1)',
+            }
+          }}>
+            <Typography variant="h6" gutterBottom sx={{ 
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              fontWeight: 600,
+              opacity: 0.9,
+            }}>
+              📉 Taxa de Cancelamento
             </Typography>
-            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
+            <Typography variant="h3" sx={{ 
+              fontSize: { xs: '1.75rem', sm: '2.5rem' },
+              fontWeight: 700,
+            }}>
               {stats.cancellationRate.toFixed(1)}%
             </Typography>
           </Paper>
@@ -196,18 +296,54 @@ const AdminEstatisticas = () => {
 
         {/* Gráfico de barras */}
         <Grid item xs={12} lg={8}>
-          <Paper sx={{ p: { xs: 1, sm: 2 } }}>
-            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
-              Agendamentos por Dia
+          <Paper sx={{ 
+            p: { xs: 2, sm: 3 },
+            background: 'rgba(26, 26, 26, 0.95)',
+            border: '1px solid rgba(255, 215, 0, 0.3)',
+            backdropFilter: 'blur(10px)',
+          }}>
+            <Typography variant="h5" gutterBottom sx={{ 
+              fontSize: { xs: '1.25rem', sm: '1.5rem' },
+              fontWeight: 600,
+              color: '#FFD700',
+              mb: 2,
+            }}>
+              📊 Agendamentos por Dia
             </Typography>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={dailyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" stroke="#333333" />
+                <XAxis 
+                  dataKey="date" 
+                  tick={{ fill: '#cccccc', fontSize: 12 }}
+                  axisLine={{ stroke: '#333333' }}
+                />
+                <YAxis 
+                  tick={{ fill: '#cccccc', fontSize: 12 }}
+                  axisLine={{ stroke: '#333333' }}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    background: '#1a1a1a',
+                    border: '1px solid rgba(255, 215, 0, 0.3)',
+                    borderRadius: 8,
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.5)',
+                    color: '#ffffff',
+                  }}
+                />
                 <Legend />
-                <Bar dataKey="appointments" fill="#f5b041" name="Agendamentos" />
+                <Bar 
+                  dataKey="appointments" 
+                  fill="url(#barGradient)" 
+                  name="Agendamentos"
+                  radius={[4, 4, 0, 0]}
+                />
+                <defs>
+                  <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#FFD700" />
+                    <stop offset="100%" stopColor="#B8860B" />
+                  </linearGradient>
+                </defs>
               </BarChart>
             </ResponsiveContainer>
           </Paper>
@@ -215,11 +351,21 @@ const AdminEstatisticas = () => {
 
         {/* Gráfico de pizza */}
         <Grid item xs={12} lg={4}>
-          <Paper sx={{ p: { xs: 1, sm: 2 } }}>
-            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
-              Distribuição de Serviços
+          <Paper sx={{ 
+            p: { xs: 2, sm: 3 },
+            background: 'rgba(26, 26, 26, 0.95)',
+            border: '1px solid rgba(255, 215, 0, 0.3)',
+            backdropFilter: 'blur(10px)',
+          }}>
+            <Typography variant="h5" gutterBottom sx={{ 
+              fontSize: { xs: '1.25rem', sm: '1.5rem' },
+              fontWeight: 600,
+              color: '#FFD700',
+              mb: 2,
+            }}>
+              🥧 Distribuição de Serviços
             </Typography>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
                   data={pieData}
@@ -227,7 +373,7 @@ const AdminEstatisticas = () => {
                   cy="50%"
                   labelLine={false}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={60}
+                  outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -238,7 +384,15 @@ const AdminEstatisticas = () => {
                     />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip 
+                  contentStyle={{
+                    background: '#1a1a1a',
+                    border: '1px solid rgba(255, 215, 0, 0.3)',
+                    borderRadius: 8,
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.5)',
+                    color: '#ffffff',
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </Paper>

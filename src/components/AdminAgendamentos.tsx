@@ -172,62 +172,107 @@ const AdminAgendamentos = () => {
         </TableContainer>
       </Box>
 
-      {/* Versão Mobile - Cards */}
-      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-        {appointments
-          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((appointment) => (
-            <Paper key={appointment.id} sx={{ p: 2, mb: 2 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                <Typography variant="h6" component="div">
-                  {appointment.client_name}
-                </Typography>
-                <Chip
-                  label={appointment.status}
-                  color={getStatusColor(appointment.status)}
-                  size="small"
-                />
-              </Box>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                <strong>Data:</strong> {appointment.appointment_date}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                <strong>Horário:</strong> {appointment.appointment_time}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                <strong>Telefone:</strong> {appointment.client_phone}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                <strong>Serviço:</strong> {appointment.service_package}
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-                <IconButton
-                  color="success"
-                  onClick={() => handleStatusChange(appointment, 'confirmed')}
-                  disabled={appointment.status === 'confirmed'}
-                  size="small"
-                >
-                  <CheckCircleIcon />
-                </IconButton>
-                <IconButton
-                  color="error"
-                  onClick={() => handleStatusChange(appointment, 'cancelled')}
-                  disabled={appointment.status === 'cancelled'}
-                  size="small"
-                >
-                  <CancelIcon />
-                </IconButton>
-                <IconButton
-                  color="error"
-                  onClick={() => handleDeleteClick(appointment)}
-                  size="small"
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
-            </Paper>
-          ))}
-      </Box>
+             {/* Versão Mobile - Cards */}
+       <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+         {appointments
+           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+           .map((appointment) => (
+                           <Paper key={appointment.id} sx={{ 
+                p: 3, 
+                mb: 3,
+                background: 'rgba(26, 26, 26, 0.95)',
+                border: '1px solid rgba(255, 215, 0, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                backdropFilter: 'blur(10px)',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: 4,
+                  height: '100%',
+                  background: appointment.status === 'confirmed' 
+                    ? 'linear-gradient(135deg, #00C851, #5DFC71)'
+                    : appointment.status === 'cancelled'
+                    ? 'linear-gradient(135deg, #ff4444, #ff6b6b)'
+                    : 'linear-gradient(135deg, #FFD700, #B8860B)',
+                }
+              }}>
+                               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: 600, color: '#FFD700' }}>
+                    👤 {appointment.client_name}
+                  </Typography>
+                 <Chip
+                   label={appointment.status}
+                   color={getStatusColor(appointment.status)}
+                   size="small"
+                   sx={{ fontWeight: 600 }}
+                 />
+               </Box>
+               <Box sx={{ display: 'grid', gap: 1, mb: 3 }}>
+                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                   <span style={{ fontSize: '1.2rem' }}>📅</span>
+                   <strong>Data:</strong> {appointment.appointment_date}
+                 </Typography>
+                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                   <span style={{ fontSize: '1.2rem' }}>🕐</span>
+                   <strong>Horário:</strong> {appointment.appointment_time}
+                 </Typography>
+                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                   <span style={{ fontSize: '1.2rem' }}>📞</span>
+                   <strong>Telefone:</strong> {appointment.client_phone}
+                 </Typography>
+                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                   <span style={{ fontSize: '1.2rem' }}>✂️</span>
+                   <strong>Serviço:</strong> {appointment.service_package}
+                 </Typography>
+               </Box>
+               <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                 <IconButton
+                   color="success"
+                   onClick={() => handleStatusChange(appointment, 'confirmed')}
+                   disabled={appointment.status === 'confirmed'}
+                   size="medium"
+                   sx={{
+                     backgroundColor: appointment.status === 'confirmed' ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
+                     '&:hover': {
+                       backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                     }
+                   }}
+                 >
+                   <CheckCircleIcon />
+                 </IconButton>
+                 <IconButton
+                   color="error"
+                   onClick={() => handleStatusChange(appointment, 'cancelled')}
+                   disabled={appointment.status === 'cancelled'}
+                   size="medium"
+                   sx={{
+                     backgroundColor: appointment.status === 'cancelled' ? 'rgba(239, 68, 68, 0.1)' : 'transparent',
+                     '&:hover': {
+                       backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                     }
+                   }}
+                 >
+                   <CancelIcon />
+                 </IconButton>
+                 <IconButton
+                   color="error"
+                   onClick={() => handleDeleteClick(appointment)}
+                   size="medium"
+                   sx={{
+                     '&:hover': {
+                       backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                     }
+                   }}
+                 >
+                   <DeleteIcon />
+                 </IconButton>
+               </Box>
+             </Paper>
+           ))}
+       </Box>
       {/* Paginação */}
       <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <TablePagination

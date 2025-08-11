@@ -63,28 +63,62 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="fixed" color="transparent" sx={{ background: 'rgba(0, 0, 0, 0.8)' }}>
-        <Toolbar>
+      <AppBar 
+        position="fixed" 
+        sx={{ 
+          background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(255, 215, 0, 0.3)',
+        }}
+      >
+        <Toolbar sx={{ minHeight: { xs: 64, sm: 70 } }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ 
+              mr: 2, 
+              display: { sm: 'none' },
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              }
+            }}
           >
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="h5"
             component={Link}
             to="/"
             sx={{
               flexGrow: 1,
               color: 'white',
               textDecoration: 'none',
-              fontWeight: 'bold',
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
             }}
           >
+            <Box
+              component="span"
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                background: 'linear-gradient(45deg, #FFD700, #B8860B)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.2rem',
+                fontWeight: 700,
+                color: '#000000',
+              }}
+            >
+              M
+            </Box>
             Barbearia do Miguel
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -93,7 +127,15 @@ const Navbar = () => {
                 key={item.text}
                 component={Link}
                 to={item.path}
-                sx={{ color: 'white', mx: 1 }}
+                sx={{ 
+                  color: 'white', 
+                  mx: 1,
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    transform: 'translateY(-1px)',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                }}
               >
                 {item.text}
               </Button>
@@ -101,27 +143,48 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <Button
-                  color="inherit"
+                  variant="contained"
                   onClick={handleAdminClick}
                   startIcon={<AdminPanelSettingsIcon />}
-                  sx={{ mx: 1 }}
+                  sx={{ 
+                    mx: 1,
+                    background: 'linear-gradient(45deg, #f57c00, #ffad42)',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #bb4d00, #f57c00)',
+                    }
+                  }}
                 >
                   Admin
                 </Button>
                 <Button
-                  color="inherit"
+                  variant="outlined"
                   onClick={handleLogout}
-                  sx={{ mx: 1 }}
+                  sx={{ 
+                    mx: 1,
+                    color: 'white',
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    '&:hover': {
+                      borderColor: 'white',
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    }
+                  }}
                 >
                   Sair
                 </Button>
               </>
             ) : (
               <Button
-                color="inherit"
+                variant="contained"
                 onClick={handleAdminClick}
                 startIcon={<LoginIcon />}
-                sx={{ mx: 1 }}
+                sx={{ 
+                  mx: 1,
+                  background: 'linear-gradient(45deg, #FFD700, #B8860B)',
+                  color: '#000000',
+                  '&:hover': {
+                    background: 'linear-gradient(45deg, #B8860B, #FFD700)',
+                  }
+                }}
               >
                 Login
               </Button>

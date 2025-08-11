@@ -54,28 +54,46 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
       onClose={onClose}
       maxWidth="sm"
       fullWidth
+                                                       PaperProps={{
+           sx: {
+             background: 'rgba(26, 26, 26, 0.4)',
+             border: '1px solid rgba(255, 215, 0, 0.3)',
+             backdropFilter: 'blur(10px)',
+             color: '#ffffff',
+           }
+         }}
     >
-      <DialogTitle>
+      <DialogTitle sx={{ color: '#FFD700', fontWeight: 600 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          Selecione um Horário
-          <IconButton onClick={onClose}>
+          🕐 Selecione um Horário
+          <IconButton onClick={onClose} sx={{ color: '#FFD700' }}>
             <CloseIcon />
           </IconButton>
         </Box>
       </DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            Legenda:
+          <Typography variant="body2" sx={{ color: '#FFD700', fontWeight: 600 }}>
+            📋 Legenda:
           </Typography>
           <Box display="flex" gap={2} mt={1}>
             <Box display="flex" alignItems="center" gap={1}>
-              <Box sx={{ width: 16, height: 16, bgcolor: 'success.main', borderRadius: 1 }} />
-              <Typography variant="body2">Disponível</Typography>
+              <Box sx={{ 
+                width: 16, 
+                height: 16, 
+                background: 'linear-gradient(45deg, #FFD700, #B8860B)', 
+                borderRadius: 1 
+              }} />
+              <Typography variant="body2" sx={{ color: '#ffffff' }}>Disponível</Typography>
             </Box>
             <Box display="flex" alignItems="center" gap={1}>
-              <Box sx={{ width: 16, height: 16, bgcolor: 'grey.300', borderRadius: 1 }} />
-              <Typography variant="body2">Ocupado/Bloqueado</Typography>
+              <Box sx={{ 
+                width: 16, 
+                height: 16, 
+                bgcolor: 'rgba(255, 255, 255, 0.1)', 
+                borderRadius: 1 
+              }} />
+              <Typography variant="body2" sx={{ color: '#ffffff' }}>Ocupado/Bloqueado</Typography>
             </Box>
           </Box>
         </Box>
@@ -98,18 +116,20 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
                     }
                   }}
                   sx={{
-                    bgcolor: isOccupied ? 'grey.300' : 'success.main',
-                    color: isOccupied ? 'text.secondary' : 'white',
+                    bgcolor: isOccupied ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(45deg, #FFD700, #B8860B)',
+                    color: isOccupied ? 'rgba(255, 255, 255, 0.5)' : '#000000',
                     '&:hover': {
-                      bgcolor: isOccupied ? 'grey.300' : 'success.dark',
+                      bgcolor: isOccupied ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(45deg, #B8860B, #FFD700)',
+                      transform: isOccupied ? 'none' : 'translateY(-1px)',
                     },
                     '&.Mui-disabled': {
-                      bgcolor: 'grey.300',
-                      color: 'text.secondary',
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      color: 'rgba(255, 255, 255, 0.5)',
                     },
                     height: '48px',
                     textTransform: 'none',
                     fontSize: '1rem',
+                    fontWeight: 600,
                   }}
                 >
                   {horario}
@@ -298,14 +318,44 @@ const Scheduling = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f5f5f5' }}>
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/src/assets/Gui.png')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      position: 'relative',
+    }}>
       <Navbar />
-      <Container maxWidth="md" sx={{ pt: 12, pb: 6 }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ mb: 4 }}>
-          Agendar Horário
+      <Container maxWidth="md" sx={{ pt: 12, pb: 6, position: 'relative', zIndex: 1 }}>
+        <Typography 
+          variant="h3" 
+          component="h1" 
+          gutterBottom 
+          align="center" 
+          sx={{ 
+            mb: 4,
+            fontWeight: 700,
+            background: 'linear-gradient(135deg, #FFD700, #B8860B)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            fontSize: { xs: '2rem', sm: '3rem' },
+          }}
+        >
+          ✂️ Agendar Horário
         </Typography>
         
-        <Paper elevation={3} sx={{ p: 4 }}>
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 4,
+            background: 'rgba(26, 26, 26, 0.3)',
+            border: '1px solid rgba(255, 215, 0, 0.3)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
+          }}
+        >
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -382,15 +432,20 @@ const Scheduling = () => {
                   disabled={!selectedDate || loading}
                   sx={{ 
                     height: '56px',
-                    borderColor: 'rgba(0, 0, 0, 0.23)',
+                    borderColor: 'rgba(255, 215, 0, 0.5)',
                     justifyContent: 'flex-start',
-                    color: 'text.primary',
+                    color: '#FFD700',
+                    '&:hover': {
+                      borderColor: '#FFD700',
+                      backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                    },
                     '&.Mui-disabled': {
-                      borderColor: 'rgba(0, 0, 0, 0.23)',
+                      borderColor: 'rgba(255, 215, 0, 0.3)',
+                      color: 'rgba(255, 215, 0, 0.5)',
                     }
                   }}
                 >
-                  {selectedTime || 'Selecionar Horário'}
+                  🕐 {selectedTime || 'Selecionar Horário'}
                 </Button>
               </Grid>
               
@@ -399,15 +454,30 @@ const Scheduling = () => {
                   fullWidth
                   type="submit"
                   variant="contained"
-                  color="secondary"
                   size="large"
                   disabled={loading}
-                  sx={{ mt: 2 }}
+                  sx={{ 
+                    mt: 2,
+                    background: 'linear-gradient(45deg, #FFD700, #B8860B)',
+                    color: '#000000',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    py: 1.5,
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #B8860B, #FFD700)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 8px 20px rgba(255, 215, 0, 0.3)',
+                    },
+                    '&:disabled': {
+                      background: 'rgba(255, 215, 0, 0.3)',
+                      color: 'rgba(0, 0, 0, 0.5)',
+                    }
+                  }}
                 >
                   {loading ? (
                     <CircularProgress size={24} color="inherit" />
                   ) : (
-                    'Confirmar Agendamento'
+                    '✨ Confirmar Agendamento'
                   )}
                 </Button>
               </Grid>
