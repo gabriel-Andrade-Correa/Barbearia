@@ -37,7 +37,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`admin-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: { xs: 1, sm: 3 } }}>{children}</Box>}
     </div>
   );
 }
@@ -104,8 +104,17 @@ const Admin = () => {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f5f5f5' }}>
       <Navbar />
-      <Container maxWidth="lg" sx={{ pt: 12, pb: 6 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
+      <Container maxWidth="lg" sx={{ pt: { xs: 10, sm: 12 }, pb: 6, px: { xs: 1, sm: 2 } }}>
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          gutterBottom 
+          sx={{ 
+            mb: 4,
+            fontSize: { xs: '1.5rem', sm: '2.125rem' },
+            textAlign: { xs: 'center', sm: 'left' }
+          }}
+        >
           Painel Administrativo
         </Typography>
 
@@ -115,7 +124,15 @@ const Admin = () => {
             onChange={handleTabChange}
             indicatorColor="secondary"
             textColor="secondary"
-            centered
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+              '& .MuiTab-root': {
+                minWidth: 'auto',
+                px: { xs: 1, sm: 2 },
+                fontSize: { xs: '0.75rem', sm: '0.875rem' }
+              }
+            }}
           >
             <Tab label="Agendamentos" />
             <Tab label="Estatísticas" />

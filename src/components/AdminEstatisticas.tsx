@@ -130,44 +130,44 @@ const AdminEstatisticas = () => {
 
   return (
     <Box>
-      <Grid container spacing={3}>
+      <Grid container spacing={{ xs: 1, sm: 3 }}>
         {/* Cards de estatísticas */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={6} sm={6} md={3}>
+          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
               Total de Agendamentos
             </Typography>
-            <Typography variant="h4" color="secondary">
+            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
               {stats.totalAppointments}
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={6} sm={6} md={3}>
+          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
               Média Diária
             </Typography>
-            <Typography variant="h4" color="secondary">
+            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
               {stats.averagePerDay.toFixed(1)}
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={6} sm={6} md={3}>
+          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
               Serviço Mais Popular
             </Typography>
-            <Typography variant="h4" color="secondary">
+            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
               {stats.mostPopularService}
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={6} sm={6} md={3}>
+          <Paper sx={{ p: { xs: 1, sm: 2 }, textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1.25rem' } }}>
               Taxa de Cancelamento
             </Typography>
-            <Typography variant="h4" color="secondary">
+            <Typography variant="h4" color="secondary" sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
               {stats.cancellationRate.toFixed(1)}%
             </Typography>
           </Paper>
@@ -175,30 +175,32 @@ const AdminEstatisticas = () => {
 
         {/* Seletor de período */}
         <Grid item xs={12}>
-          <FormControl sx={{ minWidth: 200 }}>
-            <InputLabel>Período</InputLabel>
-            <Select
-              value={periodoSelecionado}
-              label="Período"
-              onChange={handlePeriodoChange}
-            >
-              <MenuItem value="semana">Últimos 30 Dias</MenuItem>
-              <MenuItem value="mes">Último Mês</MenuItem>
-              <MenuItem value="ano">Último Ano</MenuItem>
-            </Select>
-          </FormControl>
-          <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
-            * Mostrando todos os agendamentos disponíveis
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, alignItems: { xs: 'stretch', sm: 'center' } }}>
+            <FormControl sx={{ minWidth: { xs: '100%', sm: 200 } }}>
+              <InputLabel>Período</InputLabel>
+              <Select
+                value={periodoSelecionado}
+                label="Período"
+                onChange={handlePeriodoChange}
+              >
+                <MenuItem value="semana">Últimos 30 Dias</MenuItem>
+                <MenuItem value="mes">Último Mês</MenuItem>
+                <MenuItem value="ano">Último Ano</MenuItem>
+              </Select>
+            </FormControl>
+            <Typography variant="caption" color="text.secondary" sx={{ alignSelf: { xs: 'flex-start', sm: 'center' } }}>
+              * Mostrando todos os agendamentos disponíveis
+            </Typography>
+          </Box>
         </Grid>
 
         {/* Gráfico de barras */}
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={12} lg={8}>
+          <Paper sx={{ p: { xs: 1, sm: 2 } }}>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
               Agendamentos por Dia
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <BarChart data={dailyData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
@@ -212,12 +214,12 @@ const AdminEstatisticas = () => {
         </Grid>
 
         {/* Gráfico de pizza */}
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid item xs={12} lg={4}>
+          <Paper sx={{ p: { xs: 1, sm: 2 } }}>
+            <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
               Distribuição de Serviços
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
                   data={pieData}
@@ -225,7 +227,7 @@ const AdminEstatisticas = () => {
                   cy="50%"
                   labelLine={false}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  outerRadius={60}
                   fill="#8884d8"
                   dataKey="value"
                 >
