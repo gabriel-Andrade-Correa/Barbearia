@@ -115,31 +115,40 @@ const TimeSlotGrid = ({ horarios, ocupiedTimeSlots, onSelectTime, onClose }: {
                       onClose();
                     }
                   }}
-                  sx={{
-                    bgcolor: isOccupied ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(45deg, #FFD700, #B8860B)',
-                    color: isOccupied ? 'rgba(255, 255, 255, 0.5)' : '#000000',
-                    '&:hover': {
-                      bgcolor: isOccupied ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(45deg, #B8860B, #FFD700)',
-                      transform: isOccupied ? 'none' : 'translateY(-1px)',
-                    },
-                    '&.Mui-disabled': {
-                      bgcolor: 'rgba(255, 255, 255, 0.1)',
-                      color: 'rgba(255, 255, 255, 0.5)',
-                    },
-                    height: '48px',
-                    textTransform: 'none',
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                  }}
+                                     sx={{
+                     background: isOccupied ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(45deg, #FFD700, #B8860B)',
+                     color: isOccupied ? 'rgba(255, 255, 255, 0.5)' : '#000000',
+                     '&:hover': {
+                       background: isOccupied ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(45deg, #B8860B, #FFD700)',
+                       transform: isOccupied ? 'none' : 'translateY(-1px)',
+                     },
+                     '&.Mui-disabled': {
+                       background: 'rgba(255, 255, 255, 0.1)',
+                       color: 'rgba(255, 255, 255, 0.5)',
+                     },
+                     height: isOccupied ? '64px' : '48px',
+                     textTransform: 'none',
+                     fontSize: '1rem',
+                     fontWeight: 600,
+                     display: 'flex',
+                     flexDirection: 'column',
+                     justifyContent: 'center',
+                     alignItems: 'center',
+                     padding: '8px 4px',
+                     overflow: 'hidden',
+                   }}
                 >
-                  {horario}
+                  <Box sx={{ fontSize: '1rem', fontWeight: 600 }}>
+                    {horario}
+                  </Box>
                   {isOccupied && (
                     <Box 
                       component="span" 
                       sx={{ 
-                        display: 'block', 
-                        fontSize: '0.75rem',
-                        mt: 0.5 
+                        fontSize: '0.7rem',
+                        lineHeight: 1,
+                        textAlign: 'center',
+                        wordBreak: 'break-word',
                       }}
                     >
                       (Indisponível)
@@ -207,7 +216,8 @@ const Scheduling = () => {
         const occupiedTimes = appointments
           .filter((app: Appointment) => {
             console.log('Frontend - Verificando agendamento:', app);
-            return (app.status !== 'cancelled' || app.service_package === 'Horário Bloqueado') && app.appointment_time;
+            // Considera ocupado se: não for cancelado E tem horário
+            return app.status !== 'cancelled' && app.appointment_time;
           })
           .map((app: Appointment) => {
             const time = app.appointment_time?.substring(0, 5) || '';
