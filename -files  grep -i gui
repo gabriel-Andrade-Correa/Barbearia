@@ -1,0 +1,5 @@
+[33m2ebc2b8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m feat: aumenta transparência do formulário de agendamento para melhor visualização da imagem Gui
+[33m0915c51[m feat: adicionar responsividade para dispositivos móveis
+[33m0ad3c7a[m feat: corrigir estatísticas e adicionar configuração do Supabase
+[33m6341809[m horario
+[33mf706fe5[m fix: Remoção de importação não utilizada

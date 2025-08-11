@@ -320,7 +320,7 @@ const Scheduling = () => {
   return (
     <Box sx={{ 
       minHeight: '100vh', 
-      background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/src/assets/Gui.png')`,
+      background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/Gui.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundAttachment: 'fixed',
@@ -366,6 +366,26 @@ const Scheduling = () => {
                   onChange={(e) => setName(e.target.value)}
                   required
                   disabled={loading}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      color: '#ffffff',
+                      '& fieldset': {
+                        borderColor: 'rgba(255, 215, 0, 0.3)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(255, 215, 0, 0.5)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#FFD700',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      '&.Mui-focused': {
+                        color: '#FFD700',
+                      },
+                    },
+                  }}
                 />
               </Grid>
               
@@ -378,6 +398,26 @@ const Scheduling = () => {
                   placeholder="(00) 00000-0000"
                   required
                   disabled={loading}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      color: '#ffffff',
+                      '& fieldset': {
+                        borderColor: 'rgba(255, 215, 0, 0.3)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(255, 215, 0, 0.5)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#FFD700',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      '&.Mui-focused': {
+                        color: '#FFD700',
+                      },
+                    },
+                  }}
                 />
               </Grid>
               
@@ -390,6 +430,26 @@ const Scheduling = () => {
                   onChange={(e) => setSelectedPackage(e.target.value)}
                   required
                   disabled={loading}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      color: '#ffffff',
+                      '& fieldset': {
+                        borderColor: 'rgba(255, 215, 0, 0.3)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(255, 215, 0, 0.5)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#FFD700',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      '&.Mui-focused': {
+                        color: '#FFD700',
+                      },
+                    },
+                  }}
                 >
                   {servicePacotes.map((pacote) => (
                     <MenuItem key={pacote.id} value={pacote.name}>
@@ -418,6 +478,26 @@ const Scheduling = () => {
                     textField: {
                       fullWidth: true,
                       required: true,
+                      sx: {
+                        '& .MuiOutlinedInput-root': {
+                          color: '#ffffff',
+                          '& fieldset': {
+                            borderColor: 'rgba(255, 215, 0, 0.3)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'rgba(255, 215, 0, 0.5)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#FFD700',
+                          },
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          '&.Mui-focused': {
+                            color: '#FFD700',
+                          },
+                        },
+                      },
                     },
                   }}
                   disabled={loading}
