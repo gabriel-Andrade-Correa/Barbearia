@@ -43,7 +43,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const Admin = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(!isAuthenticated);
@@ -57,17 +57,33 @@ const Admin = () => {
     }
   }, [isAuthenticated]);
 
-  const handleLogin = () => {
-    const success = login(username, password);
-    if (success) {
-      setIsLoginDialogOpen(false);
-    } else {
-      alert('Credenciais inválidas');
+  const handleLogin = async () => {
+    try {
+      const success = await login(username, password);
+      if (success) {
+        setIsLoginDialogOpen(false);
+      } else {
+        alert('Credenciais inválidas');
+      }
+    } catch (error) {
+      console.error('Erro no login:', error);
+      alert('Erro ao fazer login. Tente novamente.');
     }
   };
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Erro no logout:', error);
+      // Mesmo com erro, redireciona para home
+      navigate('/');
+    }
   };
 
   if (!isAuthenticated) {
@@ -205,24 +221,42 @@ const Admin = () => {
           boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
           border: '1px solid rgba(255, 215, 0, 0.3)',
           backdropFilter: 'blur(10px)',
+          position: 'relative',
         }}>
-                      <Typography 
-              variant="h3" 
-              component="h1" 
-              gutterBottom 
-              sx={{ 
-                mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2.5rem' },
-                textAlign: { xs: 'center', sm: 'left' },
-                fontWeight: 700,
-                background: 'linear-gradient(135deg, #FFD700, #B8860B)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Painel Administrativo
-            </Typography>
+          <Button
+            onClick={handleLogout}
+            sx={{
+              position: 'absolute',
+              top: 16,
+              right: 16,
+              background: 'linear-gradient(45deg, #dc3545, #c82333)',
+              color: '#ffffff',
+              fontWeight: 600,
+              '&:hover': {
+                background: 'linear-gradient(45deg, #c82333, #dc3545)',
+              },
+              zIndex: 1,
+            }}
+          >
+            🚪 Sair
+          </Button>
+          <Typography 
+            variant="h3" 
+            component="h1" 
+            gutterBottom 
+            sx={{ 
+              mb: 1,
+              fontSize: { xs: '1.75rem', sm: '2.5rem' },
+              textAlign: { xs: 'center', sm: 'left' },
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #FFD700, #B8860B)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Painel Administrativo
+          </Typography>
           <Typography 
             variant="body1" 
             color="text.secondary"
