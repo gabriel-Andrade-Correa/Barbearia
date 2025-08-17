@@ -60,10 +60,10 @@ const AdminAgendamentos = () => {
     setPage(0);
   };
 
-  const handleStatusChange = async (appointment: Appointment, newStatus: 'confirmed' | 'cancelled') => {
+  const handleStatusChange = async (appointment: Appointment, newStatus: 'confirmado' | 'cancelado') => {
     try {
       await appointmentService.updateStatus(appointment.id, newStatus);
-      toast.success(`Status alterado para ${newStatus}`);
+      toast.success(`Status alterado para ${getStatusLabel(newStatus)}`);
       loadAppointments();
     } catch (error) {
       console.error('Erro ao atualizar status:', error);
@@ -92,12 +92,25 @@ const AdminAgendamentos = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed':
+      case 'confirmado':
         return 'success';
-      case 'cancelled':
+      case 'cancelado':
         return 'error';
       default:
         return 'warning';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'confirmed':
+        return 'confirmado';
+      case 'cancelled':
+        return 'cancelado';
+      case 'pending':
+        return 'pendente';
+      default:
+        return status;
     }
   };
 
@@ -138,7 +151,7 @@ const AdminAgendamentos = () => {
                     <TableCell>{appointment.service_package}</TableCell>
                     <TableCell>
                       <Chip
-                        label={appointment.status}
+                        label={getStatusLabel(appointment.status)}
                         color={getStatusColor(appointment.status)}
                         size="small"
                       />
@@ -146,15 +159,15 @@ const AdminAgendamentos = () => {
                     <TableCell>
                       <IconButton
                         color="success"
-                        onClick={() => handleStatusChange(appointment, 'confirmed')}
-                        disabled={appointment.status === 'confirmed'}
+                        onClick={() => handleStatusChange(appointment, 'confirmado')}
+                        disabled={appointment.status === 'confirmado'}
                       >
                         <CheckCircleIcon />
                       </IconButton>
                       <IconButton
                         color="error"
-                        onClick={() => handleStatusChange(appointment, 'cancelled')}
-                        disabled={appointment.status === 'cancelled'}
+                        onClick={() => handleStatusChange(appointment, 'cancelado')}
+                        disabled={appointment.status === 'cancelado'}
                       >
                         <CancelIcon />
                       </IconButton>
@@ -192,9 +205,9 @@ const AdminAgendamentos = () => {
                   left: 0,
                   width: 4,
                   height: '100%',
-                  background: appointment.status === 'confirmed' 
+                  background: appointment.status === 'confirmado' 
                     ? 'linear-gradient(135deg, #00C851, #5DFC71)'
-                    : appointment.status === 'cancelled'
+                    : appointment.status === 'cancelado'
                     ? 'linear-gradient(135deg, #ff4444, #ff6b6b)'
                     : 'linear-gradient(135deg, #FFD700, #B8860B)',
                 }
@@ -204,7 +217,7 @@ const AdminAgendamentos = () => {
                     👤 {appointment.client_name}
                   </Typography>
                  <Chip
-                   label={appointment.status}
+                   label={getStatusLabel(appointment.status)}
                    color={getStatusColor(appointment.status)}
                    size="small"
                    sx={{ fontWeight: 600 }}
@@ -231,11 +244,11 @@ const AdminAgendamentos = () => {
                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
                  <IconButton
                    color="success"
-                   onClick={() => handleStatusChange(appointment, 'confirmed')}
-                   disabled={appointment.status === 'confirmed'}
+                   onClick={() => handleStatusChange(appointment, 'confirmado')}
+                   disabled={appointment.status === 'confirmado'}
                    size="medium"
                    sx={{
-                     backgroundColor: appointment.status === 'confirmed' ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
+                     backgroundColor: appointment.status === 'confirmado' ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
                      '&:hover': {
                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
                      }
@@ -245,11 +258,11 @@ const AdminAgendamentos = () => {
                  </IconButton>
                  <IconButton
                    color="error"
-                   onClick={() => handleStatusChange(appointment, 'cancelled')}
-                   disabled={appointment.status === 'cancelled'}
+                   onClick={() => handleStatusChange(appointment, 'cancelado')}
+                   disabled={appointment.status === 'cancelado'}
                    size="medium"
                    sx={{
-                     backgroundColor: appointment.status === 'cancelled' ? 'rgba(239, 68, 68, 0.1)' : 'transparent',
+                     backgroundColor: appointment.status === 'cancelado' ? 'rgba(239, 68, 68, 0.1)' : 'transparent',
                      '&:hover': {
                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
                      }

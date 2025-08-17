@@ -101,7 +101,7 @@ const Admin = () => {
         }}
       >
         <DialogTitle sx={{ color: '#FFD700', fontWeight: 600 }}>
-          🔐 Login Administrativo
+          🔐 Acesso Administrativo
         </DialogTitle>
         <DialogContent>
           <TextField

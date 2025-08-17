@@ -27,12 +27,12 @@ const AdminConfiguracoes = () => {
   const [saving, setSaving] = useState(false);
   const [settingsId, setSettingsId] = useState<string>('');
   const [workingDays, setWorkingDays] = useState<string[]>([
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday'
+    'segunda-feira',
+    'terça-feira',
+    'quarta-feira',
+    'quinta-feira',
+    'sexta-feira',
+    'sábado'
   ]);
 
   const [workingHours, setWorkingHours] = useState({
@@ -57,12 +57,12 @@ const AdminConfiguracoes = () => {
       if (settings) {
         setSettingsId(settings.id);
         setWorkingDays(Array.isArray(settings.working_days) ? settings.working_days : [
-          'monday',
-          'tuesday',
-          'wednesday',
-          'thursday',
-          'friday',
-          'saturday'
+          'segunda-feira',
+          'terça-feira',
+          'quarta-feira',
+          'quinta-feira',
+          'sexta-feira',
+          'sábado'
         ]);
         setWorkingHours(settings.working_hours || { start: '08:00', end: '18:00' });
         setBlockedDates(settings.blocked_dates || []);
@@ -185,8 +185,8 @@ const AdminConfiguracoes = () => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={workingDays.includes('monday')}
-                      onChange={() => handleWorkingDayChange('monday')}
+                      checked={workingDays.includes('segunda-feira')}
+                      onChange={() => handleWorkingDayChange('segunda-feira')}
                       disabled={saving}
                     />
                   }
@@ -197,8 +197,8 @@ const AdminConfiguracoes = () => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={workingDays.includes('tuesday')}
-                      onChange={() => handleWorkingDayChange('tuesday')}
+                      checked={workingDays.includes('terça-feira')}
+                      onChange={() => handleWorkingDayChange('terça-feira')}
                       disabled={saving}
                     />
                   }
@@ -209,8 +209,8 @@ const AdminConfiguracoes = () => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={workingDays.includes('wednesday')}
-                      onChange={() => handleWorkingDayChange('wednesday')}
+                      checked={workingDays.includes('quarta-feira')}
+                      onChange={() => handleWorkingDayChange('quarta-feira')}
                       disabled={saving}
                     />
                   }
@@ -221,8 +221,8 @@ const AdminConfiguracoes = () => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={workingDays.includes('thursday')}
-                      onChange={() => handleWorkingDayChange('thursday')}
+                      checked={workingDays.includes('quinta-feira')}
+                      onChange={() => handleWorkingDayChange('quinta-feira')}
                       disabled={saving}
                     />
                   }
@@ -233,8 +233,8 @@ const AdminConfiguracoes = () => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={workingDays.includes('friday')}
-                      onChange={() => handleWorkingDayChange('friday')}
+                      checked={workingDays.includes('sexta-feira')}
+                      onChange={() => handleWorkingDayChange('sexta-feira')}
                       disabled={saving}
                     />
                   }
@@ -245,8 +245,8 @@ const AdminConfiguracoes = () => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={workingDays.includes('saturday')}
-                      onChange={() => handleWorkingDayChange('saturday')}
+                      checked={workingDays.includes('sábado')}
+                      onChange={() => handleWorkingDayChange('sábado')}
                       disabled={saving}
                     />
                   }
@@ -257,8 +257,8 @@ const AdminConfiguracoes = () => {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={workingDays.includes('sunday')}
-                      onChange={() => handleWorkingDayChange('sunday')}
+                      checked={workingDays.includes('domingo')}
+                      onChange={() => handleWorkingDayChange('domingo')}
                       disabled={saving}
                     />
                   }

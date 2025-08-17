@@ -12,7 +12,7 @@ export const appointmentService = {
       .select('*')
       .eq('appointment_date', appointment.appointment_date)
       .eq('appointment_time', appointment.appointment_time)
-      .neq('status', 'cancelled');
+      .neq('status', 'cancelado');
 
     console.log('API - Agendamentos existentes:', existingAppointments);
 
@@ -64,7 +64,7 @@ export const appointmentService = {
     return data;
   },
 
-  updateStatus: async (id: string, status: 'pending' | 'confirmed' | 'cancelled') => {
+  updateStatus: async (id: string, status: 'pendente' | 'confirmado' | 'cancelado') => {
     const { data, error } = await supabase
       .from('appointments')
       .update({ status })
@@ -106,7 +106,7 @@ export const appointmentService = {
         .from('appointments')
         .select('*')
         .eq('appointment_date', date)
-        .neq('status', 'cancelled')
+        .neq('status', 'cancelado')
         .order('appointment_time', { ascending: true }),
       adminSettingsService.getBlockedDates()
     ]);
@@ -139,7 +139,7 @@ export const appointmentService = {
       client_name: 'BLOQUEADO',
       client_phone: '',
       service_package: 'Horário Bloqueado',
-      status: 'cancelled',
+      status: 'cancelado',
       created_at: new Date().toISOString()
     }));
 
@@ -190,12 +190,12 @@ export const adminSettingsService = {
     return {
       id: data?.id || '',
       working_days: Array.isArray(data?.working_days) ? data.working_days : [
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday'
+        'segunda-feira',
+        'terça-feira',
+        'quarta-feira',
+        'quinta-feira',
+        'sexta-feira',
+        'sábado'
       ],
       working_hours: data?.working_hours || { start: '08:00', end: '18:00' },
       blocked_dates: Array.isArray(data?.blocked_dates) ? data.blocked_dates : [],
@@ -274,8 +274,8 @@ export const statisticsService = {
       }
 
       const total = appointments.length;
-      const cancelled = appointments.filter(a => a.status === 'cancelled').length;
-      const cancellationRate = (cancelled / total) * 100;
+          const cancelled = appointments.filter(a => a.status === 'cancelado').length;
+    const cancellationRate = (cancelled / total) * 100;
 
       // Agrupar por serviço
       const serviceCount: { [key: string]: number } = {};

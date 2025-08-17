@@ -5,7 +5,7 @@ export interface Appointment {
   service_package: string;
   appointment_date: string;
   appointment_time: string;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: 'pendente' | 'confirmado' | 'cancelado';
   created_at: string;
 }
 

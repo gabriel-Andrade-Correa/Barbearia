@@ -42,7 +42,7 @@ const Navbar = () => {
         <>
           <ListItem disablePadding>
             <ListItemButton onClick={handleAdminClick}>
-              <ListItemText primary="Admin" />
+              <ListItemText primary="Administrador" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -54,7 +54,7 @@ const Navbar = () => {
       ) : (
         <ListItem disablePadding>
           <ListItemButton onClick={handleAdminClick}>
-            <ListItemText primary="Login" />
+            <ListItemText primary="Entrar" />
           </ListItemButton>
         </ListItem>
       )}
@@ -154,7 +154,7 @@ const Navbar = () => {
                     }
                   }}
                 >
-                  Admin
+                  Administrador
                 </Button>
                 <Button
                   variant="outlined"
@@ -185,9 +185,9 @@ const Navbar = () => {
                     background: 'linear-gradient(45deg, #B8860B, #FFD700)',
                   }
                 }}
-              >
-                Login
-              </Button>
+                              >
+                  Entrar
+                </Button>
             )}
           </Box>
         </Toolbar>

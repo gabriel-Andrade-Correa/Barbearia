@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS appointments (
   service_package TEXT NOT NULL,
   appointment_date DATE NOT NULL,
   appointment_time TIME NOT NULL,
-  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'cancelled')),
+  status TEXT DEFAULT 'pendente' CHECK (status IN ('pendente', 'confirmado', 'cancelado')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS service_packages (
 CREATE TABLE IF NOT EXISTS admin_settings (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   working_hours JSONB DEFAULT '{"start": "08:00", "end": "18:00"}',
-  working_days TEXT[] DEFAULT ARRAY['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+  working_days TEXT[] DEFAULT ARRAY['segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'],
   blocked_dates TEXT[] DEFAULT ARRAY[]::TEXT[],
   blocked_time_slots JSONB DEFAULT '[]'::jsonb
 );
@@ -50,11 +50,20 @@ ON CONFLICT DO NOTHING;
 INSERT INTO admin_settings (working_hours, working_days, blocked_dates, blocked_time_slots) VALUES
 (
   '{"start": "08:00", "end": "18:00"}',
-  ARRAY['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+  ARRAY['segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'],
   ARRAY[]::TEXT[],
   '[]'::jsonb
 )
 ON CONFLICT DO NOTHING;
+
+-- =====================================================
+-- MIGRAÇÃO DE STATUS (ATUALIZAR REGISTROS EXISTENTES)
+-- =====================================================
+
+-- Atualizar status antigos para novos em português
+UPDATE appointments SET status = 'pendente' WHERE status = 'pending';
+UPDATE appointments SET status = 'confirmado' WHERE status = 'confirmed';
+UPDATE appointments SET status = 'cancelado' WHERE status = 'cancelled';
 
 -- =====================================================
 -- CONFIGURAÇÕES DE SEGURANÇA (RLS)
@@ -107,7 +116,7 @@ BEGIN
     SELECT 1 FROM appointments 
     WHERE appointment_date = check_date 
     AND appointment_time = check_time 
-    AND status != 'cancelled'
+    AND status != 'cancelado'
   );
 END;
 $$ LANGUAGE plpgsql;
@@ -129,7 +138,7 @@ BEGIN
     SELECT 1 FROM appointments 
     WHERE appointment_date = check_date 
     AND appointment_time = t.time_slot 
-    AND status != 'cancelled'
+    AND status != 'cancelado'
   );
 END;
 $$ LANGUAGE plpgsql;

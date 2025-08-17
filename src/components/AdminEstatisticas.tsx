@@ -105,7 +105,12 @@ const AdminEstatisticas = () => {
       });
 
       setDailyData(appointmentStats.daily_appointments || []);
-      setPieData(serviceDistribution || []);
+      // Aplicar abreviação aos nomes dos serviços
+      const abbreviatedData = (serviceDistribution || []).map(item => ({
+        ...item,
+        name: abbreviateServiceName(item.name)
+      }));
+      setPieData(abbreviatedData);
       
       console.log('✅ Estatísticas carregadas com sucesso');
     } catch (error) {
@@ -118,6 +123,36 @@ const AdminEstatisticas = () => {
 
   const handlePeriodoChange = (event: any) => {
     setPeriodoSelecionado(event.target.value);
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'confirmed':
+        return 'confirmado';
+      case 'cancelled':
+        return 'cancelado';
+      case 'pending':
+        return 'pendente';
+      default:
+        return status;
+    }
+  };
+
+  const abbreviateServiceName = (name: string) => {
+    switch (name) {
+      case 'Corte Masculino':
+        return 'Corte';
+      case 'Corte + Barba':
+        return 'Corte+Barba';
+      case 'Hidratação':
+        return 'Hidratação';
+      case 'Pigmentação':
+        return 'Pigmentação';
+      case 'Barba':
+        return 'Barba';
+      default:
+        return name.length > 10 ? name.substring(0, 10) + '...' : name;
+    }
   };
 
   if (loading) {
@@ -365,15 +400,27 @@ const AdminEstatisticas = () => {
             }}>
               🥧 Distribuição de Serviços
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={400}>
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
-                  cy="50%"
+                  cy="40%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  label={({ name, percent }) => (
+                    <text 
+                      x={0} 
+                      y={0} 
+                      dy={8} 
+                      textAnchor="middle" 
+                      fill="#ffffff"
+                      fontSize="14"
+                      fontWeight="bold"
+                    >
+                      {`${(percent * 100).toFixed(0)}%`}
+                    </text>
+                  )}
+                  outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -392,6 +439,24 @@ const AdminEstatisticas = () => {
                     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.5)',
                     color: '#ffffff',
                   }}
+                />
+                <Legend 
+                  verticalAlign="bottom" 
+                  height={80}
+                  layout="horizontal"
+                  wrapperStyle={{
+                    paddingTop: '15px',
+                    fontSize: '12px'
+                  }}
+                  formatter={(value) => (
+                    <span style={{ 
+                      color: '#ffffff', 
+                      fontSize: '12px',
+                      fontWeight: '500'
+                    }}>
+                      {value}
+                    </span>
+                  )}
                 />
               </PieChart>
             </ResponsiveContainer>

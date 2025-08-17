@@ -217,7 +217,7 @@ const Scheduling = () => {
           .filter((app: Appointment) => {
             console.log('Frontend - Verificando agendamento:', app);
             // Considera ocupado se: não for cancelado E tem horário
-            return app.status !== 'cancelled' && app.appointment_time;
+            return app.status !== 'cancelado' && app.appointment_time;
           })
           .map((app: Appointment) => {
             const time = app.appointment_time?.substring(0, 5) || '';
@@ -249,14 +249,14 @@ const Scheduling = () => {
     const formattedDate = format(selectedDate, 'yyyy-MM-dd');
     const currentAppointments = await appointmentService.getByDate(formattedDate);
     const isTimeSlotTaken = currentAppointments
-      .filter((app: Appointment) => app.status !== 'cancelled')
+              .filter((app: Appointment) => app.status !== 'cancelado')
       .some((app: Appointment) => app.appointment_time === selectedTime);
 
     if (isTimeSlotTaken) {
       toast.error('Este horário já foi reservado. Por favor, escolha outro horário.');
       // Recarrega os horários ocupados
       const occupiedTimes = currentAppointments
-        .filter((app: Appointment) => app.status !== 'cancelled')
+        .filter((app: Appointment) => app.status !== 'cancelado')
         .map((app: Appointment) => app.appointment_time);
       setOcupiedTimeSlots(occupiedTimes);
       return;
@@ -271,7 +271,7 @@ const Scheduling = () => {
         service_package: selectedPackage,
         appointment_date: formattedDate,
         appointment_time: selectedTime,
-        status: 'pending'
+        status: 'pendente'
       };
 
       const createdAppointment = await appointmentService.create(appointment);
@@ -314,17 +314,17 @@ const Scheduling = () => {
     const formattedDate = format(date, 'yyyy-MM-dd');
     const dayOfWeek = format(date, 'EEEE', { locale: ptBR }).toLowerCase();
     const dayMap: { [key: string]: string } = {
-      'domingo': 'sunday',
-      'segunda-feira': 'monday',
-      'terça-feira': 'tuesday',
-      'quarta-feira': 'wednesday',
-      'quinta-feira': 'thursday',
-      'sexta-feira': 'friday',
-      'sábado': 'saturday'
+      'domingo': 'domingo',
+      'segunda-feira': 'segunda-feira',
+      'terça-feira': 'terça-feira',
+      'quarta-feira': 'quarta-feira',
+      'quinta-feira': 'quinta-feira',
+      'sexta-feira': 'sexta-feira',
+      'sábado': 'sábado'
     };
     
-    const englishDay = dayMap[dayOfWeek];
-    return blockedDates.includes(formattedDate) || !workingDays.includes(englishDay);
+    const portugueseDay = dayMap[dayOfWeek];
+    return blockedDates.includes(formattedDate) || !workingDays.includes(portugueseDay);
   };
 
   return (
